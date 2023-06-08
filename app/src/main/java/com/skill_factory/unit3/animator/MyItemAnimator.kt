@@ -9,4 +9,17 @@ import com.skill_factory.unit3.R
 
 class MyItemAnimator(private val context: Context) : DefaultItemAnimator() {
 
+
+//    val animAdd :Animation! = AnimationUtils.loadAnimation(context, )
+//    override fun getAddDuration(): Long {
+//        return super.getAddDuration()
+//    }
+//
+//    override fun onRemoveStarting(item: RecyclerView.ViewHolder?) {
+//        super.onRemoveStarting(item)
+//    }
+//
+//    override fun onAddStarting(item: RecyclerView.ViewHolder?) {
+//        super.onAddStarting(item)
+//    }
 }
