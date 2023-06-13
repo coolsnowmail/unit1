@@ -59,14 +59,23 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager =
             GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = adapter
-//        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-//        recyclerView.adapter = adapter
+        binding.recyclerView.itemAnimator = MyItemAnimator(applicationContext)
+
 
         binding.add.setOnClickListener {
-
+            adapter.data.add(
+                Product(
+                    adapter.data.size,
+                    R.drawable.ic_orange,
+                    "Orange",
+                    "Orange juice is widely used as a drink in restaurants and cafes."
+                )
+            )
+            adapter.notifyItemInserted(adapter.data.size - 1)
         }
         binding.remove.setOnClickListener {
-
+            adapter.data.removeLast()
+            adapter.notifyItemRemoved(adapter.data.size)
         }
     }
 }
