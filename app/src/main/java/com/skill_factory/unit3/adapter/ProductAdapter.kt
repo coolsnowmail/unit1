@@ -11,7 +11,7 @@ import androidx.viewbinding.ViewBinding
 import com.skill_factory.unit3.R
 import com.skill_factory.unit3.databinding.ItemBinding
 
-class ProductAdapter(val data: ArrayList<Product>) :
+class ProductAdapter(var data: ArrayList<Product>) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
     inner class ViewHolder(val itemBinding: ItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {

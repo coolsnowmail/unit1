@@ -3,20 +3,14 @@ package com.skill_factory.unit3
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skill_factory.unit3.adapter.Product
 import com.skill_factory.unit3.adapter.ProductAdapter
+import com.skill_factory.unit3.adapter.ProductDiff
 import com.skill_factory.unit3.animator.MyItemAnimator
 import com.skill_factory.unit3.databinding.ActivityMainBinding
-
-
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         val adapter = ProductAdapter(
             arrayListOf(
                 Product(
@@ -57,14 +51,27 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         )
+
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         binding.recyclerView.layoutManager =
             GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = MyItemAnimator(applicationContext)
 
 
+
+
         binding.add.setOnClickListener {
-            adapter.data.add(
+
+            val newList: ArrayList<Product = arrayListOf<Product>()
+            newList.addAll(adapter.data)
+            newList.add(
                 getIndex(),
                 Product(
                     adapter.data.size,
@@ -73,7 +80,19 @@ class MainActivity : AppCompatActivity() {
                     "Orange juice is widely used as a drink in restaurants and cafes."
                 )
             )
-            adapter.notifyItemInserted(getIndex())
+            updateData(newList)
+
+
+//            adapter.data.add(
+//                getIndex(),
+//                Product(
+//                    adapter.data.size,
+//                    R.drawable.ic_apple,
+//                    "Apple",
+//                    "Orange juice is widely used as a drink in restaurants and cafes."
+//                )
+//            )
+//            adapter.notifyItemInserted(getIndex())
         }
         binding.remove.setOnClickListener {
             adapter.data.removeAt(getIndex())
@@ -90,9 +109,17 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+        fun updateData(newList: ArrayList<Product>) {
+            val oldList: ArrayList<Product> = adapter.data
+            val productDiff = ProductDiff(oldList, newList)
+            val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiff)
+            adapter.data = newList
+            diffResult.dispatchUpdatesTo(adapter)
+        }
 
     private fun getIndex(): Int {
         val itemIndex: EditText = binding.itemIndex
         return itemIndex.text.toString().toInt()
     }
+
 }
