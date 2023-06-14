@@ -2,6 +2,7 @@ package com.skill_factory.unit3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skill_factory.unit3.adapter.Product
@@ -64,18 +65,34 @@ class MainActivity : AppCompatActivity() {
 
         binding.add.setOnClickListener {
             adapter.data.add(
+                getIndex(),
                 Product(
                     adapter.data.size,
-                    R.drawable.ic_orange,
-                    "Orange",
+                    R.drawable.ic_apple,
+                    "Apple",
                     "Orange juice is widely used as a drink in restaurants and cafes."
                 )
             )
-            adapter.notifyItemInserted(adapter.data.size - 1)
+            adapter.notifyItemInserted(getIndex())
         }
         binding.remove.setOnClickListener {
-            adapter.data.removeLast()
-            adapter.notifyItemRemoved(adapter.data.size)
+            adapter.data.removeAt(getIndex())
+            adapter.notifyItemRemoved(getIndex())
         }
+        binding.change.setOnClickListener {
+            adapter.data[getIndex()] = Product(
+                adapter.data.size,
+                R.drawable.ic_orange,
+                "Orange",
+                "sdjhfhjdshfjudshfdsjukhfdsjufhdus"
+            )
+            adapter.notifyItemChanged(getIndex())
+        }
+
+    }
+
+    private fun getIndex(): Int {
+        val itemIndex: EditText = binding.itemIndex
+        return itemIndex.text.toString().toInt()
     }
 }
