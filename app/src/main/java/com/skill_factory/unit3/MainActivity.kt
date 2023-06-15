@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
             val newList: ArrayList<Product> = arrayListOf()
             newList.addAll(adapter.data)
-            newList.add(
+            newList.set(
                 getIndex(),
                 Product(
                     adapter.data.size,
