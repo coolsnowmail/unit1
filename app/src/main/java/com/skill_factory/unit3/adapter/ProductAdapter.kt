@@ -9,38 +9,84 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.skill_factory.unit3.R
+import com.skill_factory.unit3.databinding.ItemAdBinding
 import com.skill_factory.unit3.databinding.ItemBinding
+import java.io.Serializable
+import kotlin.IllegalArgumentException
 
-class ProductAdapter(var data: ArrayList<Product>) :
-    RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
-    inner class ViewHolder(val itemBinding: ItemBinding) :
+const val ITEM_VIEW_TYPE_PRODUCT = 0
+const val ITEM_VIEW_TYPE_AD = 1
+
+class ProductAdapter(var data: ArrayList<Item>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    inner class ItemViewHolder(val itemBinding: ItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-//        val icon = itemView.i
-//        val textName = itemView.findViewById<TextView>(R.id.text_name)
-//        val textDesc = itemView.findViewById<TextView>(R.id.text_desc)
-        @SuppressLint("ResourceType")
         fun bindingItem(product: Product) {
             itemBinding.icon.setImageResource(product.idIcon)
             itemBinding.textName.text = product.name
             itemBinding.textDesc.text = product.desc
         }
+
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false))
-        return ViewHolder(ItemBinding.inflate(LayoutInflater.from(parent.context)))
+    inner class ItemAdViewHolder(val itemAdBinding: ItemAdBinding) :
+        RecyclerView.ViewHolder(itemAdBinding.root) {
+        fun bindingItem(product: Ad) {
+            itemAdBinding.title.text = product.title
+            itemAdBinding.content.text = product.content
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+    override fun getItemViewType(position: Int): Int {
+
+        return when(data[position]) {
+            is Product -> ITEM_VIEW_TYPE_PRODUCT
+            is Ad -> ITEM_VIEW_TYPE_AD
+            else -> throw IllegalArgumentException("Invalid item")
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+//        return ViewHolder(ItemBinding.inflate(LayoutInflater.from(parent.context)))
+        return when (viewType) {
+            ITEM_VIEW_TYPE_PRODUCT -> ItemViewHolder(
+                ItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
+            ITEM_VIEW_TYPE_AD -> ItemAdViewHolder(
+                ItemAdBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
+    }
+
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val product = data[position]
-        holder.bindingItem(product)
-//        holder.icon.setImageResource(data[position].idIcon)
-//        holder.textName.text = data[position].name
-//        holder.textDesc.text = data[position].desc
+        when (holder) {
+            is ItemAdViewHolder -> holder.bindingItem(product as Ad)
+            is ItemViewHolder -> holder.bindingItem(product as Product)
+        }
+
+
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
+
+
 
 }
