@@ -120,19 +120,18 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun updateData (updateList: ArrayList<Item>) {
-        adapter.data.clear()
-        adapter.data.addAll(updateList)
-        adapter.notifyDataSetChanged()
-//        notifyDataSetChanged()
-    }
-//    fun updateData(newList: ArrayList<Item>) {
-//        val oldList: ArrayList<Item> = adapter.data
-//        val productDiff = ProductDiff(oldList, newList)
-//        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiff)
-//        adapter.data = newList
-//        diffResult.dispatchUpdatesTo(adapter)
+//    fun updateData (updateList: ArrayList<Item>) {
+//        adapter.data.clear()
+//        adapter.data.addAll(updateList)
+//        adapter.notifyDataSetChanged()
 //    }
+    fun updateData(newList: ArrayList<Item>) {
+        val oldList: ArrayList<Item> = adapter.data
+        val productDiff = ProductDiff(oldList, newList)
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiff)
+        adapter.data = newList
+        diffResult.dispatchUpdatesTo(adapter)
+    }
 
     private fun getIndex(): Int {
         val itemIndex: EditText = binding.itemIndex

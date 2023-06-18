@@ -13,21 +13,29 @@ class ProductDiff(val oldList: ArrayList<Item>, val newList: ArrayList<Item>) :
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return false
-//        if (oldList[oldItemPosition] is Product && newList[newItemPosition] is Product) {
-//            return oldList[oldItemPosition].id == newList[newItemPosition].id
-//        } else if (oldList[oldItemPosition] is Ad && newList[newItemPosition] is Ad) {
-//            return oldList[oldItemPosition].id == newList[newItemPosition].id
-//        } else {
-//            return false
-//        }
+        val old: Item = oldList[oldItemPosition]
+        val new: Item = newList[newItemPosition]
+////        val product = old as? Product
+////        product?.id
+//        (old as? Product)?.id
+        return if (old is Product && new is Product) {
+            old.id == new.id
+        } else if (old is Ad && new is Ad) {
+            old.id == new.id
+        } else {
+            false
+        }
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return true
-//        val old: Item = oldList[oldItemPosition]
-//        val new: Item = newList[newItemPosition]
-//        return old.id == new.id && old.name == new.name && old.desc == new.desc
+        val old: Item = oldList[oldItemPosition]
+        val new: Item = newList[newItemPosition]
+        return if (old is Product && new is Product) {
+            old.id == new.id && old.name == new.name && old.desc == new.desc
+        } else if (old is Ad && new is Ad) {
+            old.id == new.id && old.content == new.content && old.title == new.title
+        } else {
+            false
+        }
     }
-
 }
