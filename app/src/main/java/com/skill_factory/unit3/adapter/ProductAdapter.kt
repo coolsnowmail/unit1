@@ -50,7 +50,6 @@ class ProductAdapter(var data: ArrayList<Item>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-//        return ViewHolder(ItemBinding.inflate(LayoutInflater.from(parent.context)))
         return when (viewType) {
             ITEM_VIEW_TYPE_PRODUCT -> ItemViewHolder(
                 ItemBinding.inflate(
