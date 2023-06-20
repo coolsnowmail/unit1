@@ -88,7 +88,11 @@ class MainActivity : AppCompatActivity() {
                     "Orange juice is widely used as a drink in restaurants and cafes."
                 )
             )
-//            updateData(newList)
+            val oldList: ArrayList<Item> = adapter.items as ArrayList<Item>
+            val productDiff = ProductDiff(oldList, newList)
+            val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiff)
+            adapter.items = newList
+            diffResult.dispatchUpdatesTo(adapter)
         }
 
         binding.remove.setOnClickListener {
@@ -105,6 +109,18 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyItemChanged(getIndex())
         }
 
+
+//        fun updateData(newList: ArrayList<Item>) {
+//            val oldList: ArrayList<Item> = adapter.items as ArrayList<Item>
+//            val productDiff = ProductDiff(oldList, newList)
+//            val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiff)
+//            adapter.items = newList
+//            diffResult.dispatchUpdatesTo(adapter)
+//        }
+    }
+    private fun getIndex(): Int {
+        val itemIndex: EditText = binding.itemIndex
+        return itemIndex.text.toString().toInt()
     }
 
 
@@ -113,17 +129,5 @@ class MainActivity : AppCompatActivity() {
 //        adapter.data.addAll(updateList)
 //        adapter.notifyDataSetChanged()
 //    }
-//    fun updateData(newList: ArrayList<Item>) {
-//        val oldList: ArrayList<Item> = adapter.data
-//        val productDiff = ProductDiff(oldList, newList)
-//        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiff)
-//        adapter.data = newList
-//        diffResult.dispatchUpdatesTo(adapter)
-//    }
-//
-    private fun getIndex(): Int {
-        val itemIndex: EditText = binding.itemIndex
-        return itemIndex.text.toString().toInt()
-    }
 //
 }
